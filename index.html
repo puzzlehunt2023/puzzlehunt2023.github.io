@@ -92,6 +92,8 @@ div.vertical {
 
 	function loadPage(pwd) {
 
+		console.log(pwd);
+
 		var hash= pwd;
 		hash= Sha1.hash(pwd);
 		var url= hash + "/index.html";
