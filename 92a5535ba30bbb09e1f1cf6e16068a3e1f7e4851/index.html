@@ -1,7 +1,7 @@
 <html>
 
 <head>
-<title>Game</title>
+<title>FUN</title>
 
 <script src="https://apis.google.com/js/platform.js" async defer></script>
 
@@ -822,13 +822,11 @@
     
     console.log(this.score);
 
-    if(!this.score || this.score < 100) {  
-        this.canvasCtx.fillText("TRY AGAIN",
-        restartTargetX, restartTargetY);
+    if(!this.score || this.score < (500*2)) {
+        document.getElementById('textheader').innerHTML = "TRY AGAIN";
     } else {
         // CHEATER!!
-        this.canvasCtx.fillText("47.592431, -122.313522 .... DIG",
-        restartTargetX-50, restartTargetY);
+        document.getElementById('textheader').innerHTML = "47.592440, -122.313535 PLANTER DIG";
     }
     }
     };
@@ -2558,7 +2556,7 @@ html[subframe] body {
    }(document, 'script', 'facebook-jssdk'));
 </script>
 <div id="main-frame-error" class="interstitial-wrapper" jstcache="0">
-    <div class="onlyforchrome" style="font-size: 30px;text-align: center;font-family: Helvetica;">Reach 2000</div>
+    <div id="textheader" style="font-size: 30px;text-align: center;font-family: Helvetica;">Reach 1000</div>
     <div id="offline-resources" jstcache="0">
     <div id="offline-resources-1x" jstcache="0">
       <img id="1x-obstacle-large" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAAAyCAMAAACJUtIoAAAACVBMVEX////39/dTU1OabbyfAAAAAXRSTlMAQObYZgAAAXhJREFUeF7t2NGqAjEMANGM///RlwvaYQndULuFPJgHUYaEI6IPhgNAOA8HZ+3U6384F5y1U6YzAZTWG+dZamnFEstBFtCKJZSHWMADLJ18z+JqpQeLdKoDC8siC5iFCQs4znIxB5B1t6F3lQWkL4N0JsF+u6GXJdbI+FKW+yWr3lhgCZ2VSag3Nlk/FnRkIRbasLCO0oulikMsvmGpeiGLZ1jOMgtIP5bODivYYUXEIVbwFCt4khVssRgsgidZwQaLd2A8m7MYLGTl4KeQQs2y4kMAMGGlmQViDIb5O6xZnnLD485dIBzqDSE1yyFdL4Iqu4XJqUUWl/NVAFSZq1P6a5aqbAUM2epQbBioWflUBABiUyhYyZoCBev8XyMAObDNOhOAfiyxmHU0YNlldGAphGjFCjA3YkUn1o/1Y3EkZFZ5isCC6NUgwDBn1RuXH96doNfAhDXfsIyJ2AnolcCVhay0kcYbW0HvCO8OwIcJ3GzkORpkFuUP/1Ec8FW1qJkAAAAASUVORK5CYII=" jstcache="0">
