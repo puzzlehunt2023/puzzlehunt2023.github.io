@@ -65,6 +65,14 @@ div.vertical {
 
 <body>
 
+	<div id="calculatingMessage" class="lightbox" >
+		Calculating your location...
+	</div>
+
+	<div id="wrongLocationMessage" class="lightbox" >
+		Looks like there's nothing here
+	</div>
+
 	<div id="loginbox" class="lightbox" >
 		<div class="horizontal">
 			<div class="vertical">
@@ -77,56 +85,103 @@ div.vertical {
 		</div>
 	</div>
 
-
-
 	<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
-
-
-	 <script type="text/javascript" src="https://rawcdn.githack.com/chrisveness/crypto/7067ee62f18c76dd4a9d372a00e647205460b62b/sha1.js"></script>
-
+	<script type="text/javascript" src="https://rawcdn.githack.com/chrisveness/crypto/7067ee62f18c76dd4a9d372a00e647205460b62b/sha1.js"></script>
 	<script type="text/javascript">
-	"use strict";
+		"use strict";
+
+		function loadPage(pwd) {
+
+			console.log(pwd);
+
+			var hash= pwd;
+			hash= Sha1.hash(pwd);
+			var url= hash + "/index.html";
+
+			$.ajax({
+				url : url,
+				dataType : "html",
+				success : function(data) {
+
+					window.location= url;
+
+				},
+				error : function(xhr, ajaxOptions, thrownError) {
 
 
-	function loadPage(pwd) {
+					parent.location.hash= hash;
 
-		console.log(pwd);
+					//$("#wrongPassword").show();
+					$("#password").attr("placeholder","wrong password");
+					$("#password").val("");
+				}
+			});
+		}
 
-		var hash= pwd;
-		hash= Sha1.hash(pwd);
-		var url= hash + "/index.html";
+		// finds distance in feet between the two coordinate pairs
+		function findDistanceBetweenCoordinates (lat1, long1, lat2, long2) {
+			lat1 = lat1 / (180/Math.PI);
+			long1 = long1 / (180/Math.PI);
+			lat2 = lat2 / (180/Math.PI);
+			long2 = long2 / (180/Math.PI);
 
-		$.ajax({
-			url : url,
-			dataType : "html",
-			success : function(data) {
+			let distance = 3963 * Math.acos((Math.sin(lat1) * Math.sin(lat2)) + Math.cos(lat1) * Math.cos(lat2) * Math.cos(long2-long1));
+			distance = distance * 5280;
 
-				window.location= url;
+			console.log(distance)
+			return distance;
+		}
 
-			},
-			error : function(xhr, ajaxOptions, thrownError) {
+		function getCurrentPositionSuccess(position) {
+			console.log('getCurrentPositionSuccess');
+			
+			var myLatitude = position.coords.latitude;
+			var myLongitude = position.coords.longitude;
+			
+			console.log(myLatitude);
+			console.log(myLongitude);
 
+			var targetLatitude = 21.3738219;
+			var targetLongitude = -157.7259814;
+			var targetDistance = 500;
 
-				parent.location.hash= hash;
+			var distance = findDistanceBetweenCoordinates(myLatitude, myLongitude, targetLatitude, targetLongitude);
 
-				//$("#wrongPassword").show();
-				$("#password").attr("placeholder","wrong password");
-				$("#password").val("");
+			if (distance < targetDistance) {
+				$("#loginbox").show();
+				$("#calculatingMessage").hide();
+			} else {
+				$("#wrongLocationMessage").show();
+				$("#calculatingMessage").hide();
+			}
+		}
+
+		function getCurrentPositionError() {
+			console.log('getCurrentPositionError');
+		}
+
+		$(document).ready(function() {
+    		console.log("ready!");
+			$("#wrongLocationMessage").hide();
+			$("#loginbox").hide();
+
+			if (navigator.geolocation) {
+				navigator.geolocation.getCurrentPosition(getCurrentPositionSuccess, getCurrentPositionError);
+			} else {
+				console.log('Enable Geolocation');
 			}
 		});
-	}
 
-
-	$("#loginbutton").on("click", function() {
-		loadPage($("#password").val().toLowerCase());
-	});
-	$("#password").keypress(function(e) {
-		if (e.which == 13) {
-
+		$("#loginbutton").on("click", function() {
 			loadPage($("#password").val().toLowerCase());
-		}
-	});
-	$("#password").focus();
+		});
+		$("#password").keypress(function(e) {
+			if (e.which == 13) {
+
+				loadPage($("#password").val().toLowerCase());
+			}
+		});
+		$("#password").focus();
 
 	</script>
 
