@@ -10,8 +10,27 @@
 
 <style>
 
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;700&display=swap');
+
 body {
 	color: rgb(255, 255, 255);
+	font-family: 'Open Sans', sans-serif;
+	background-color: #F5F5F5;
+}
+
+.site-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+}
+
+.message {
+	text-align: center;
+	color: #0B3954;
+	font-size: 1.5em;
+	font-weight: 300;
+	line-height: 1.5;
 }
 
 .box {
@@ -27,10 +46,8 @@ body {
 	left: 0;
 	width: 100%;
 	height: 100%;
-	background: rgba(226, 226, 226, 0.8);
 	text-align: center;
 	margin: auto;
-
 }
 
 div.horizontal {
@@ -65,12 +82,16 @@ div.vertical {
 
 <body>
 
-	<div id="calculatingMessage" class="lightbox" >
-		Calculating your location...
-	</div>
-
-	<div id="wrongLocationMessage" class="lightbox" >
-		Looks like there's nothing here
+	<div class="site-container">
+		<div id="calculatingMessage" class="message" >
+			Calculating your location...
+		</div>
+	
+		<div id="wrongLocationMessage" class="message" >
+			<h2>Looks like there's nothing to see here.</h2>
+			<p>Maybe you're not in the right spot?</p>
+			<p>You'll need a password too...</p>
+		</div>
 	</div>
 
 	<div id="loginbox" class="lightbox" >
@@ -108,10 +129,8 @@ div.vertical {
 				},
 				error : function(xhr, ajaxOptions, thrownError) {
 
+					parent.location.hash = hash;
 
-					parent.location.hash= hash;
-
-					//$("#wrongPassword").show();
 					$("#password").attr("placeholder","wrong password");
 					$("#password").val("");
 				}
@@ -133,17 +152,16 @@ div.vertical {
 		}
 
 		function getCurrentPositionSuccess(position) {
-			console.log('getCurrentPositionSuccess');
-			
 			var myLatitude = position.coords.latitude;
 			var myLongitude = position.coords.longitude;
 			
 			console.log(myLatitude);
 			console.log(myLongitude);
 
-			var targetLatitude = 21.3738219;
-			var targetLongitude = -157.7259814;
-			var targetDistance = 500;
+			// Black Sun
+			var targetLatitude = 47.629930;
+			var targetLongitude = -122.315202;
+			var targetDistance = 30000; //feet
 
 			var distance = findDistanceBetweenCoordinates(myLatitude, myLongitude, targetLatitude, targetLongitude);
 
@@ -161,7 +179,6 @@ div.vertical {
 		}
 
 		$(document).ready(function() {
-    		console.log("ready!");
 			$("#wrongLocationMessage").hide();
 			$("#loginbox").hide();
 
@@ -177,7 +194,6 @@ div.vertical {
 		});
 		$("#password").keypress(function(e) {
 			if (e.which == 13) {
-
 				loadPage($("#password").val().toLowerCase());
 			}
 		});
